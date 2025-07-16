@@ -3,7 +3,7 @@ import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { getSiteRewriteData } from '@sitecore-jss/sitecore-jss-nextjs';
 import { Plugin } from '..';
 import { siteResolver } from 'lib/site-resolver';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 
 class SitePlugin implements Plugin {
   order = 0;

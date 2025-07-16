@@ -1,6 +1,6 @@
 import { SiteInfo } from '@sitecore-jss/sitecore-jss-nextjs/site';
 import { tryParseEnvValue } from '@sitecore-jss/sitecore-jss-nextjs/utils';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 import { SiteResolverPlugin } from '..';
 
 // Resolving from env variable, but it can be expanded or change in future if needed.

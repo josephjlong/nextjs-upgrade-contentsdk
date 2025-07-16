@@ -1,4 +1,4 @@
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 import {
   GraphQLErrorPagesService,
   SitecoreContext,

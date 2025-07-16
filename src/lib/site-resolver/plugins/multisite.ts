@@ -1,5 +1,5 @@
 import { SiteInfo } from '@sitecore-jss/sitecore-jss-nextjs/site';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 import { SiteResolverPlugin } from '..';
 
 class MultisitePlugin implements SiteResolverPlugin {

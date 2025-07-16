@@ -6,7 +6,7 @@ import {
 } from '@sitecore-jss/sitecore-jss-nextjs';
 import { getPublicUrl } from '@sitecore-jss/sitecore-jss-nextjs/utils';
 import { siteResolver } from 'lib/site-resolver';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 
 const ABSOLUTE_URL_REGEXP = '^(?:[a-z]+:)?//';
 

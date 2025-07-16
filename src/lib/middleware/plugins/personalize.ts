@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PersonalizeMiddleware } from '@sitecore-jss/sitecore-jss-nextjs/middleware';
 import { MiddlewarePlugin } from '..';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 import { siteResolver } from 'lib/site-resolver';
 
 /**

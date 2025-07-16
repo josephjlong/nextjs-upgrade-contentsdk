@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RedirectsMiddleware } from '@sitecore-jss/sitecore-jss-nextjs/middleware';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 import { MiddlewarePlugin } from '..';
 import { siteResolver } from 'lib/site-resolver';
 

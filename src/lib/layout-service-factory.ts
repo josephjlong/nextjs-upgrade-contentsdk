@@ -4,7 +4,7 @@ import {
   GraphQLLayoutService,
   constants,
 } from '@sitecore-jss/sitecore-jss-nextjs';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 
 /**
  * Factory responsible for creating a LayoutService instance

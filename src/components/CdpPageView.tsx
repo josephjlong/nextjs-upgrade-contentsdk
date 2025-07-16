@@ -6,7 +6,7 @@ import {
   PosResolver,
 } from '@sitecore-jss/sitecore-jss-nextjs';
 import { useEffect } from 'react';
-import config from 'temp/config';
+import scConfig from 'sitecore.config';
 import { init } from '@sitecore/engage';
 import { siteResolver } from 'lib/site-resolver';
 
