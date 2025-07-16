@@ -4,7 +4,7 @@ import {
   SiteInfo,
   useSitecoreContext,
   PosResolver,
-} from '@sitecore-jss/sitecore-jss-nextjs';
+} from '@sitecore-content-sdk/nextjs';
 import { useEffect } from 'react';
 import scConfig from 'sitecore.config';
 import { init } from '@sitecore/engage';

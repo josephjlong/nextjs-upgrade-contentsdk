@@ -5,7 +5,7 @@ import {
   useSitecoreContext,
   LinkField,
   TextField,
-} from '@sitecore-jss/sitecore-jss-nextjs';
+} from '@sitecore-content-sdk/nextjs';
 
 interface Fields {
   data: {
