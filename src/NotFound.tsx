@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React, { JSX } from 'react';
 
 /**
  * Rendered in case if we have 404 error

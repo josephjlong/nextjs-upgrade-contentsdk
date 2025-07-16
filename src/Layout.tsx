@@ -3,38 +3,57 @@
  */
 import React, { JSX } from 'react';
 import Head from 'next/head';
-import { Placeholder, Field, DesignLibrary, Page } from '@sitecore-content-sdk/nextjs';
+import {
+  Placeholder,
+  LayoutServiceData,
+  Field,
+  DesignLibrary,
+  RenderingType,
+} from '@sitecore-content-sdk/nextjs';
 import Scripts from 'src/Scripts';
 import SitecoreStyles from 'src/components/content-sdk/SitecoreStyles';
 
 interface LayoutProps {
-  page: Page;
+  layoutData: LayoutServiceData;
 }
 
 interface RouteFields {
   [key: string]: unknown;
   Title?: Field;
+  MetaTitle?: Field;
+  MetaDescription?: Field;
+  MetaCategory?: Field;
 }
 
-const Layout = ({ page }: LayoutProps): JSX.Element => {
-  const { layout, mode } = page;
-  const { route } = layout.sitecore;
+const Layout = ({ layoutData }: LayoutProps): JSX.Element => {
+  const { route } = layoutData.sitecore;
   const fields = route?.fields as RouteFields;
-  const mainClassPageEditing = mode.isEditing ? 'editing-mode' : 'prod-mode';
+  const isPageEditing = layoutData.sitecore.context.pageEditing;
+  const mainClassPageEditing = isPageEditing ? 'editing-mode' : 'prod-mode';
 
   return (
     <>
       <Scripts />
-      <SitecoreStyles layoutData={layout} />
+      <SitecoreStyles layoutData={layoutData} />
       <Head>
         <title>{fields?.Title?.value?.toString() || 'Page'}</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          property="og:title"
+          content={fields?.MetaTitle?.value?.toString() || fields?.Title?.value?.toString()}
+        />
+        <meta
+          property="og:description"
+          content={fields?.MetaDescription?.value?.toString() || fields?.Title?.value?.toString()}
+        />
+        <meta property="og:category" content="Content" />
+        <meta property="og:id" content={route?.itemId} />
       </Head>
 
       {/* root placeholder for the app, which we add components to using route data */}
       <div className={mainClassPageEditing}>
-        {mode.isDesignLibrary ? (
-          <DesignLibrary />
+        {layoutData.sitecore.context.renderingType === RenderingType.Component ? (
+          <DesignLibrary {...layoutData} />
         ) : (
           <>
             <header>
