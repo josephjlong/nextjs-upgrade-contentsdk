@@ -1,20 +1,18 @@
 import {
   CdpHelper,
   LayoutServicePageState,
-  SiteInfo,
   useSitecoreContext,
-  PosResolver,
 } from '@sitecore-content-sdk/nextjs';
 import { useEffect } from 'react';
-import scConfig from 'sitecore.config';
-import { init } from '@sitecore/engage';
-import { siteResolver } from 'lib/site-resolver';
+import { pageView } from '@sitecore-cloudsdk/events/browser';
+import config from 'sitecore.config';
+import { JSX } from 'react';
 
 /**
  * This is the CDP page view component.
- * It uses the Sitecore Engage SDK to enable page view events on the client-side.
- * See Sitecore Engage SDK documentation for details.
- * https://www.npmjs.com/package/@sitecore/engage
+ * It uses the Sitecore Cloud SDK to enable page view events on the client-side.
+ * See Sitecore Cloud SDK documentation for details.
+ * https://www.npmjs.com/package/@sitecore-cloudsdk/events
  */
 const CdpPageView = (): JSX.Element => {
   const {
@@ -22,55 +20,26 @@ const CdpPageView = (): JSX.Element => {
   } = useSitecoreContext();
 
   /**
-   * Creates a page view event using the Sitecore Engage SDK.
-   */
-  const createPageView = async (
-    page: string,
-    language: string,
-    site: SiteInfo,
-    pageVariantId: string
-  ) => {
-    const pointOfSale = PosResolver.resolve(site, language);
-    const engage = await init({
-      clientKey: process.env.NEXT_PUBLIC_CDP_CLIENT_KEY || '',
-      targetURL: process.env.NEXT_PUBLIC_CDP_TARGET_URL || '',
-      // Replace with the top level cookie domain of the website that is being integrated e.g ".example.com" and not "www.example.com"
-      cookieDomain: window.location.hostname.replace(/^www\./, ''),
-      // Cookie may be created in personalize middleware (server), but if not we should create it here
-      forceServerCookieMode: false,
-    });
-    engage.pageView({
-      channel: 'WEB',
-      currency: 'USD',
-      pointOfSale,
-      page,
-      pageVariantId,
-      language,
-    });
-  };
-
-  /**
    * Determines if the page view events should be turned off.
    * IMPORTANT: You should implement based on your cookie consent management solution of choice.
    * By default it is disabled in development mode
    */
-  const disabled = () => {
-    return process.env.NODE_ENV === 'development';
-  };
+  // const disabled = () => {
+  //   return process.env.NODE_ENV === 'development';
+  // };
 
   useEffect(() => {
     // Do not create events in editing or preview mode or if missing route data
     if (pageState !== LayoutServicePageState.Normal || !route?.itemId) {
       return;
     }
-    // Do not create events if disabled (e.g. we don't have consent)
-    if (disabled()) {
-      return;
-    }
+    // // Do not create events if disabled (e.g. we don't have consent)
+    // if (disabled()) {
+    //   return;
+    // }
 
-    const siteInfo = siteResolver.getByName(site?.name || config.jssAppName);
     const language = route.itemLanguage || config.defaultLanguage;
-    const scope = process.env.NEXT_PUBLIC_PERSONALIZE_SCOPE;
+    const scope = config.personalize?.scope;
 
     const pageVariantId = CdpHelper.getPageVariantId(
       route.itemId,
@@ -78,7 +47,26 @@ const CdpPageView = (): JSX.Element => {
       variantId as string,
       scope
     );
-    createPageView(route.name, language, siteInfo, pageVariantId);
+
+    const componentFriendlyId = CdpHelper.getComponentFriendlyId(
+      route.itemId,
+      'Test' as string,
+      language,
+      scope
+    );
+
+    console.log(
+      `CDP Page View: ${route.name} (${route.itemId}) - Variant: ${pageVariantId} - Component: ${componentFriendlyId}`
+    );
+
+    // there can be cases where Events are not initialized which are expected to reject
+    pageView({
+      channel: 'WEB',
+      currency: 'USD',
+      page: route.name,
+      pageVariantId,
+      language,
+    }).catch((e) => console.debug(e));
   }, [pageState, route, variantId, site]);
 
   return <></>;

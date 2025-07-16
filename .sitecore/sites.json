@@ -1,0 +1,27 @@
+[
+  {
+    "name": "sxastarter",
+    "hostName": "*",
+    "language": "en"
+  },
+  {
+    "name": "sxastarter",
+    "hostName": "*",
+    "language": "en"
+  },
+  {
+    "name": "accelerate",
+    "hostName": "www.longtech.uk|preview.longtech.uk",
+    "language": "en"
+  },
+  {
+    "name": "accelerate-preview",
+    "hostName": "*",
+    "language": "en"
+  },
+  {
+    "name": "Shared",
+    "hostName": "*",
+    "language": "en"
+  }
+]

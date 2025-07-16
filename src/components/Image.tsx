@@ -1,16 +1,16 @@
-import React, { JSX } from 'react';
 import {
-  Image as JssImage,
-  Link as JssLink,
-  ImageField,
   Field,
+  ImageField,
+  NextImage as JssImage,
+  Link as JssLink,
   LinkField,
   Text,
   useSitecoreContext,
 } from '@sitecore-content-sdk/nextjs';
+import React, { CSSProperties, JSX } from 'react';
 
 interface Fields {
-  Image: ImageField;
+  Image: ImageField & { metadata?: { [key: string]: unknown } };
   ImageCaption: Field<string>;
   TargetUrl: LinkField;
 }
@@ -29,20 +29,23 @@ const ImageDefault = (props: ImageProps): JSX.Element => (
 );
 
 export const Banner = (props: ImageProps): JSX.Element => {
+  const id = props.params.RenderingIdentifier;
   const { sitecoreContext } = useSitecoreContext();
   const isPageEditing = sitecoreContext.pageEditing;
   const classHeroBannerEmpty =
     isPageEditing && props.fields?.Image?.value?.class === 'scEmptyImage'
       ? 'hero-banner-empty'
       : '';
-  const backgroundStyle = { backgroundImage: `url('${props?.fields?.Image?.value?.src}')` };
+  const backgroundStyle = (props?.fields?.Image?.value?.src && {
+    backgroundImage: `url('${props.fields.Image.value.src}')`,
+  }) as CSSProperties;
   const modifyImageProps = {
     ...props.fields.Image,
-    editable: props?.fields?.Image?.editable
-      ?.replace(`width="${props?.fields?.Image?.value?.width}"`, 'width="100%"')
-      .replace(`height="${props?.fields?.Image?.value?.height}"`, 'height="100%"'),
+    value: {
+      ...props.fields.Image.value,
+      style: { width: '100%', height: '100%' },
+    },
   };
-  const id = props.params.RenderingIdentifier;
 
   return (
     <div

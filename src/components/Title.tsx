@@ -1,5 +1,5 @@
+import { Link, LinkField, Text, TextField, useSitecoreContext } from '@sitecore-content-sdk/nextjs';
 import React, { JSX } from 'react';
-import { Link, Text, useSitecoreContext, LinkField, TextField } from '@sitecore-content-sdk/nextjs';
 
 interface Fields {
   data: {
@@ -11,7 +11,7 @@ interface Fields {
       field: {
         jsonValue: {
           value: string;
-          editable: string;
+          metadata?: { [key: string]: unknown };
         };
       };
     };
@@ -23,7 +23,7 @@ interface Fields {
       field: {
         jsonValue: {
           value: string;
-          editable: string;
+          metadata?: { [key: string]: unknown };
         };
       };
     };
@@ -55,21 +55,16 @@ const ComponentContent = (props: ComponentContentProps) => {
 export const Default = (props: TitleProps): JSX.Element => {
   const datasource = props.fields?.data?.datasource || props.fields?.data?.contextItem;
   const { sitecoreContext } = useSitecoreContext();
-
-  const text: TextField = {
-    value: datasource?.field?.jsonValue?.value,
-    editable: datasource?.field?.jsonValue?.editable,
-  };
+  const text: TextField = datasource?.field?.jsonValue || {};
   const link: LinkField = {
     value: {
       href: datasource?.url?.path,
       title: datasource?.field?.jsonValue?.value,
-      editable: true,
     },
   };
   if (sitecoreContext.pageState !== 'normal') {
     link.value.querystring = `sc_site=${datasource?.url?.siteName}`;
-    if (!text.value) {
+    if (!text?.value) {
       text.value = 'Title field';
       link.value.href = '#';
     }
@@ -78,7 +73,7 @@ export const Default = (props: TitleProps): JSX.Element => {
   return (
     <ComponentContent styles={props.params.styles} id={props.params.RenderingIdentifier}>
       <>
-        {sitecoreContext.pageState === 'edit' ? (
+        {sitecoreContext.pageEditing ? (
           <Text field={text} />
         ) : (
           <Link field={link}>

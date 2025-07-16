@@ -8,7 +8,7 @@ import * as CdpPageView from 'src/components/CdpPageView';
 import * as ColumnSplitter from 'src/components/ColumnSplitter';
 import * as Container from 'src/components/Container';
 import * as ContentBlock from 'src/components/ContentBlock';
-import * as FEAASScripts from 'src/components/content-sdk/FEAASScripts';
+import * as FEAASScripts from 'components/FEAASScripts';
 import * as Image from 'src/components/Image';
 import * as LinkList from 'src/components/LinkList';
 import * as Navigation from 'src/components/Navigation';
@@ -17,7 +17,7 @@ import * as PartialDesignDynamicPlaceholder from 'src/components/PartialDesignDy
 import * as Promo from 'src/components/Promo';
 import * as RichText from 'src/components/RichText';
 import * as RowSplitter from 'src/components/RowSplitter';
-import * as SitecoreStyles from 'src/components/content-sdk/SitecoreStyles';
+import * as SitecoreStyles from 'components/SitecoreStyles';
 import * as Title from 'src/components/Title';
 
 // Components must be registered with to match the string key with component name in Sitecore
